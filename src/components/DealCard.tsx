@@ -1,16 +1,25 @@
 import { Clock } from 'lucide-react';
+import { getDealTimeLabel } from "@/lib/deal-time";
 import { useState } from 'react';
-
-interface Deal {
-  id: number;
-  image: string;
-  business: string;
+export interface Deal {
+  id: string;
+  title: string;
   description: string;
-  tag: string;
-  discount: string;
-  timeLeft: string;
+  image_url: string;
+  category: string;
+  type: string;
+  tags: string[];
+  discount_label: string;
+  price: number;
+  original_price: number;
+  start_date: string;
+  end_date: string;
   location: string;
+  user_id: string | null;
+  created_at: string;
+  updated_at: string;
 }
+
 
 interface DealCardProps {
   deal: Deal;
@@ -33,6 +42,8 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
     }
   };
 
+  const timeLeft = getDealTimeLabel(deal);
+
   return (
     <div
       onClick={() => {
@@ -48,8 +59,8 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
       {/* Deal Image */}
       <div className="relative h-48 lg:h-52 overflow-hidden flex-shrink-0">
         <img 
-          src={deal.image} 
-          alt={deal.business}
+          src={deal.image_url} 
+          alt={deal.title}
           className="w-full h-full object-cover"
         />
         
@@ -58,21 +69,21 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
           className="absolute top-3 left-3 px-3 py-1 rounded-full text-white text-sm backdrop-blur-sm"
           style={{ backgroundColor: `${getTagColor(deal.tag)}CC` }}
         >
-          {deal.tag}
+          {deal.type}
         </div>
 
         {/* Discount Badge */}
         <div className="absolute top-3 right-3 px-4 py-2 rounded-xl bg-[#c99a6e] text-white shadow-lg">
-          {deal.discount}
+          {deal.discount_label}
         </div>
       </div>
 
       {/* Card Content */}
       <div className="p-4 flex flex-col flex-1">
-        {/* Business Name & Description */}
+        {/* Title & Description */}
         <div className="mb-3 flex-1">
           <h3 className={`mb-1 ${darkMode ? 'text-white' : 'text-[#2a2a2a]'}`}>
-            {deal.business}
+            {deal.title}
           </h3>
           <p className={darkMode ? 'text-[#a0a0a0]' : 'text-[#6b6b6b]'}>
             {deal.description}
@@ -85,7 +96,7 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
             darkMode ? 'text-[#808080]' : 'text-[#999999]'
           }`}>
             <Clock className="w-4 h-4 flex-shrink-0" />
-            <span className="text-sm">{deal.timeLeft}</span>
+            <span className="text-sm">{timeLeft}</span>
           </div>
           
           <div className={`text-sm ${darkMode ? 'text-[#808080]' : 'text-[#999999]'}`}>
