@@ -1,36 +1,242 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌿 **MossyVan — Community Deal Sharing Platform**
 
-## Getting Started
+A **Vancouver-based community platform** where users can **discover, share, and discuss deals** from grocery stores, restaurants, and local businesses.
+Users upload deals, interact with posts, and browse trending discounts — evolving into a community-powered local deal hub.
 
-First, run the development server:
+Built with **Next.js 15, Supabase, Tailwind, ShadCN, Redis Search (Upstash), Vercel**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 **Project Vision**
+
+MossyVan is not just a deal aggregator —
+it is a **user-driven platform** similar to Reddit + Yelp + HotDeals, tailored for Vancouver’s local lifestyle.
+
+Long-term goal: **Monetize through business accounts, promotions, and premium visibility features.**
+
+---
+
+# 🔎 **Search Architecture (NEW — Redis Search Integration)**
+
+MossyVan uses a **hybrid search strategy**:
+
+### **MVP**
+
+* Supabase Full-Text Search (FTS) for simple keyword querying
+* Fast implementation
+* Zero cost
+
+### **Post-MVP — Upstash Redis Search**
+
+To support advanced functionality:
+
+* ⚡ Ultra-fast search (<1ms)
+* 🔍 Auto-complete suggestions
+* 🏪 Multi-filter queries (store, category, price range)
+* 🔥 Trending search powered by Redis Sorted Sets
+* 🔁 Sync with Supabase when new deals are created
+
+### **Why Redis Search?**
+
+* Perfect for community platforms with growing data
+* Lightweight, cheap, extremely fast
+* Direct integration with Next.js and Vercel
+* No complex DevOps like Elasticsearch
+
+### **Redis Index Structure Example**
+
+```
+idx:deals
+ ├─ title       (TEXT)
+ ├─ store       (TAG)
+ ├─ category    (TAG)
+ ├─ type        (TAG)
+ ├─ price       (NUMERIC)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **Example Redis Search Query**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```ts
+await redis.ft.search(
+  'idx:deals',
+  `@title:${query}* | @store:{${query}}`
+);
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# 🧩 **Core Platform Features**
 
-To learn more about Next.js, take a look at the following resources:
+### 🔍 Deal Search
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Keyword search
+* Full-text search (Supabase)
+* High-performance Redis Search (+ autocomplete)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🧑‍🤝‍🧑 Community Posts
 
-## Deploy on Vercel
+Users can upload deals with:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* Image
+* Price
+* Store
+* Category
+* Type (weekly / always / happy-hour / clearance)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🗨 Engagement
+
+* Likes
+* Comments
+* Favorites
+* Share links
+
+### 🧭 Browse Feed
+
+Sort by:
+
+* Popular
+* Latest
+* Store
+* Category
+
+### 🏪 Business Accounts (Monetization)
+
+* Verified business profiles
+* Official deal uploads
+* Paid promotions (highlighted deals)
+* Analytics dashboard
+
+### 🛠 Admin Functions
+
+* Remove inappropriate deals
+* Manage users & businesses
+* Approve business accounts
+
+---
+
+# 🔐 **User Roles**
+
+| Role         | Description                                                |
+| ------------ | ---------------------------------------------------------- |
+| **user**     | Regular users; browse & post deals                         |
+| **business** | Stores, restaurants; official posts + future paid features |
+| **admin**    | Moderation; full control                                   |
+
+---
+
+# 🗄️ **Database Schema (Supabase)**
+
+### `profiles`
+
+```
+id              uuid (auth.users.id)
+email           text
+name            text
+avatar_url      text
+role            text   // user | business | admin
+business_name   text
+created_at      timestamp
+```
+
+### `deals`
+
+```
+id              uuid
+user_id         uuid
+title           text
+store           text
+category        text
+price           numeric
+original_price  numeric
+type            text
+image_url       text
+created_at      timestamp
+updated_at      timestamp
+```
+
+### Post-MVP tables
+
+* `deal_likes`
+* `deal_comments`
+* `favorites`
+
+---
+
+# 🧱 **App Structure (Next.js)**
+
+```
+mossyvan/
+ ├── app/
+ │    ├── page.tsx
+ │    ├── deals/
+ │    ├── post/
+ │    ├── auth/
+ ├── components/
+ ├── lib/
+ │    ├── supabase.ts
+ │    ├── redis.ts
+ ├── public/
+ ├── README.md
+```
+
+---
+
+# 🚀 **MVP Scope**
+
+### **Included**
+
+* Deal feed
+* Deal detail
+* User login
+* Upload deal (with image)
+* Supabase integration
+* Deployment to Vercel
+
+### **Post-MVP**
+
+* Redis Search integration
+* Likes / comments
+* Favorites
+* Business account system
+* Admin dashboard
+
+---
+
+# 🗺️ **Roadmap**
+
+### Phase 1 — MVP
+
+* Deals feed, upload page, login
+
+### Phase 2 — Engagement
+
+* Likes, comments, favorites
+
+### Phase 3 — Redis Search Upgrade
+
+* Autocomplete
+* Advanced filters
+* Trending searches
+
+### Phase 4 — Business Accounts / Monetization
+
+* Store profiles
+* Paid promotions
+* Analytics dashboard
+
+### Phase 5 — Happy Hour + Map
+
+* Happy hour DB
+* Map view
+
+---
+
+# 🌱 **Vision**
+
+MossyVan aims to become:
+
+* Vancouver’s #1 local deal discovery platform
+* A thriving community-driven ecosystem
+* A monetizable local business hub
+* Showcase of modern full-stack engineering using Next.js + Supabase + Redis
+
