@@ -7,6 +7,7 @@ import { Search, Sun, Moon, Home, Compass, Plus, Heart, User } from "lucide-reac
 import { DealCard } from "./DealCard";
 import { sortDeals } from "@/lib/sortDeals";
 import Loading from "./ui/loading";
+import AddDealModal from "@/app/deals/addDealModal";
 
 interface HomePageProps {
   darkMode: boolean;
@@ -93,15 +94,15 @@ export function HomePage({ darkMode, onToggleDarkMode }: HomePageProps) {
               onClick={() => setActiveNav("Profile")}
             />
           </div>
-
           <div className="flex items-center gap-3">
-            <button
+            <AddDealModal />
+            {/* <button
               className="px-6 py-2.5 rounded-xl bg-[#c99a6e] text-white hover:bg-[#a67c52] flex items-center gap-2"
               onClick={() => setActiveNav("Add")}
             >
               <Plus className="w-5 h-5" />
               Add Deal
-            </button>
+            </button> */}
             <button
               onClick={onToggleDarkMode}
               className={`p-2.5 rounded-xl ${
