@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { DarkModeProvider } from './providers/DarkModeProvider';
+import { NavProvider } from './providers/NavProvider';
+import { DesktopNav } from '@/components/layout/DesktopNav';
+import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 
 export const metadata: Metadata = {
   title: 'Design Logo',
@@ -13,7 +17,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body  suppressHydrationWarning>{children}</body>
+      <DarkModeProvider>
+        <NavProvider>
+          <body suppressHydrationWarning>
+            <DesktopNav />
+            {children}
+            <MobileBottomNav />
+          </body>
+        </NavProvider>
+      </DarkModeProvider>
     </html>
   );
 }

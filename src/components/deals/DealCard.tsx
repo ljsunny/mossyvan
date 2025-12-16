@@ -50,14 +50,14 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
         // Handle card tap to open deal details
         console.log('Opening deal:', deal.id);
       }}
-      className={`rounded-2xl overflow-hidden transition-all cursor-pointer h-full flex flex-col ${
+      className={`rounded-2xl overflow-hidden transition-all cursor-pointer w-full max-w-sm mx-auto aspect-[4/7] flex flex-col ${
         darkMode 
           ? 'bg-[#222222] hover:bg-[#2a2a2a]' 
           : 'bg-white hover:shadow-lg'
       } ${isSaved ? 'ring-2 ring-[#c99a6e]' : ''}`}
     >
       {/* Deal Image */}
-      <div className="relative h-48 lg:h-52 overflow-hidden flex-shrink-0">
+      <div className="relative w-full flex-1 overflow-hidden flex-shrink-0">
         <img 
           src={deal.image_url} 
           alt={deal.title}
@@ -79,7 +79,7 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
       </div>
 
       {/* Card Content */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-4 flex flex-col flex-shrink-0">
         {/* Title & Description */}
         <div className="mb-3 flex-1">
           <h3 className={`mb-1 ${darkMode ? 'text-white' : 'text-[#2a2a2a]'}`}>
