@@ -16,7 +16,7 @@ Long-term goal: **Monetize through business accounts, promotions, and premium vi
 
 ---
 
-# 🔎 **Search Architecture (NEW — Redis Search Integration)**
+# 🔎 **Search Architecture (NEW — Redis Search Integration(PLAN)) - **
 
 MossyVan uses a **hybrid search strategy**:
 
