@@ -73,9 +73,9 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
         </div>
 
         {/* Discount Badge */}
-        <div className="absolute top-3 right-3 px-4 py-2 rounded-xl bg-[#c99a6e] text-white shadow-lg">
+        {/* <div className="absolute top-3 right-3 px-4 py-2 rounded-xl bg-[#c99a6e] text-white shadow-lg">
           {deal.discount_label}
-        </div>
+        </div> */}
       </div>
 
       {/* Card Content */}

@@ -6,16 +6,16 @@ import { ExploreContent } from "../explore/ExploreContent";
 import { DealCard } from "../deals/DealCard";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 
-const categories = ["All Deals", "Happy Hour", "Flash Deals", "Weekly Specials"];
+const categories = ["alldeals", "happyhour", "flashdeals", "weeklyspecials"];
 
 interface ExploreViewProps {
   deals: any[];
 }
 
 export function ExploreView({ deals }: ExploreViewProps) {
-  const [selectedCategory, setSelectedCategory] = useState("All Deals");
+  const [selectedCategory, setSelectedCategory] = useState("all Deals");
   const { darkMode } = useDarkMode();
-
+  console.log(categories)
   return (
     <>
       {/* Desktop Layout */}

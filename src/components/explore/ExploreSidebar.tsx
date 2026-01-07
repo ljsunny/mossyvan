@@ -3,7 +3,12 @@
 import { Search } from "lucide-react";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 
-const categories = ["All Deals", "Happy Hour", "Flash Deals", "Weekly Specials"];
+const CATEGORIES = [
+  { key: "alldeals", label: "All" },
+  { key: "happyhour", label: "Happy Hour" },
+  { key: "flashdeals", label: "Flash Deals" },
+  { key: "weeklyspecials", label: "Weekly Specials" },
+] as const;
 
 interface ExploreSidebarProps {
   selectedCategory: string;
@@ -19,6 +24,7 @@ export function ExploreSidebar({
   onSearchChange,
 }: ExploreSidebarProps) {
   const { darkMode } = useDarkMode();
+
 
   return (
     <aside className={`w-64 sticky top-[73px] h-[calc(100vh-73px)] p-6 border-r ${
@@ -50,19 +56,19 @@ export function ExploreSidebar({
         <h3 className={`mb-3 ${darkMode ? "text-[#a0a0a0]" : "text-[#6b6b6b]"}`}>Categories</h3>
 
         <div className="space-y-1">
-          {categories.map((category) => (
+          {CATEGORIES.map(({ key, label }) => (
             <button
-              key={category}
-              onClick={() => onCategoryChange(category)}
+              key={label}
+              onClick={() => onCategoryChange(key)}
               className={`w-full text-left px-4 py-2.5 rounded-xl transition-all ${
-                selectedCategory === category
+                selectedCategory === key
                   ? "bg-[#c99a6e] text-white"
                   : darkMode
                     ? "text-[#a0a0a0] hover:bg-[#222222]"
                     : "text-[#6b6b6b] hover:bg-[#f0ede8]"
               }`}
             >
-              {category}
+              {label}
             </button>
           ))}
         </div>

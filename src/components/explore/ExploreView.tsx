@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ExploreSidebar } from "./ExploreSidebar";
 import { ExploreContent } from "./ExploreContent";
 import { DealCard } from "../deals/DealCard";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 
-const categories = ["All Deals", "Happy Hour", "Flash Deals", "Weekly Specials"];
+const CATEGORIES = [
+  { key: "alldeals", label: "All" },
+  { key: "happyhour", label: "Happy Hour" },
+  { key: "flashdeals", label: "Flash Deals" },
+  { key: "weeklyspecials", label: "Weekly Specials" },
+] as const;
+
+type CategoryKey = typeof CATEGORIES[number]["key"];
 
 interface ExploreViewProps {
   deals: any[];
@@ -15,20 +22,25 @@ interface ExploreViewProps {
 }
 
 export function ExploreView({ deals, searchTerm, onSearchChange }: ExploreViewProps) {
-  const [selectedCategory, setSelectedCategory] = useState("All Deals");
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("alldeals");
   const { darkMode } = useDarkMode();
 
-  const filteredDeals = deals.filter((deal) => {
-    const matchesCategory =
-      selectedCategory === "All Deals" || deal.category === selectedCategory;
+  const filteredDeals = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
-    const matchesSearch =
-      !term ||
-      deal.title?.toLowerCase().includes(term) ||
-      deal.description?.toLowerCase().includes(term) ||
-      deal.location?.toLowerCase().includes(term);
-    return matchesCategory && matchesSearch;
-  });
+
+    return deals.filter((deal) => {
+      const matchesCategory =
+        selectedCategory === "alldeals" || deal.category === selectedCategory;
+
+      const matchesSearch =
+        !term ||
+        deal.title?.toLowerCase().includes(term) ||
+        deal.description?.toLowerCase().includes(term) ||
+        deal.location?.toLowerCase().includes(term);
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [deals, searchTerm, selectedCategory]);
 
   return (
     <>
@@ -39,34 +51,33 @@ export function ExploreView({ deals, searchTerm, onSearchChange }: ExploreViewPr
           onCategoryChange={setSelectedCategory}
           searchTerm={searchTerm}
           onSearchChange={onSearchChange}
+          categories={CATEGORIES}
         />
         <ExploreContent deals={filteredDeals} />
       </div>
 
       {/* Mobile / Tablet Layout */}
       <div className="lg:hidden">
-        {/* Category Pills */}
         <div className="px-4 py-3 flex gap-2 overflow-x-auto">
-          {categories.map(cat => (
+          {CATEGORIES.map(({ key, label }) => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              key={key}
+              onClick={() => setSelectedCategory(key)}
               className={`px-4 py-2 rounded-full whitespace-nowrap ${
-                selectedCategory === cat
+                selectedCategory === key
                   ? "bg-[#c99a6e] text-white"
                   : darkMode
                     ? "bg-[#222] text-[#aaa]"
                     : "bg-white text-[#666]"
               }`}
             >
-              {cat}
+              {label}
             </button>
           ))}
         </div>
-          
-        {/* Deals */}
+
         <main className="px-4 space-y-4 pb-24">
-          {filteredDeals.map(deal => (
+          {filteredDeals.map((deal) => (
             <DealCard key={deal.id} deal={deal} darkMode={darkMode} />
           ))}
         </main>
@@ -74,4 +85,3 @@ export function ExploreView({ deals, searchTerm, onSearchChange }: ExploreViewPr
     </>
   );
 }
-
