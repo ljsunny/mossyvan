@@ -27,7 +27,7 @@ export default function AddDealModal() {
       </DialogTrigger>
 
       <DialogContent 
-        className={`sm:max-w-[500px] rounded-2xl ${
+        className={`max-h-[80vh] overflow-y-auto sm:max-w-[500px] rounded-2xl ${
           darkMode ? 
           "bg-[#1a1a1a]/95 border-[#2a2a2a]" 
           : "bg-[#faf9f7]/95 border-[#e8e5e0]"
