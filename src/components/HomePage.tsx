@@ -6,7 +6,7 @@ import { sortDeals } from "@/lib/sortDeals";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 import { useNav } from "@/app/providers/NavProvider";
 import Loading from "./ui/loading";
-import { ExploreView } from "./explore/ExploreView";
+import { ExploreView } from "./views/ExploreView";
 import { HomeView } from "./views/HomeView";
 import { EmptyView } from "./views/EmptyView";
 import { MobileHeader } from "./layout/MobileHeader";
