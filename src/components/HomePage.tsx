@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { sortDeals } from "@/lib/sortDeals";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 import { useNav } from "@/app/providers/NavProvider";
-import Loading from "./ui/loading";
+import Loading from "@/components/ui/Loading";
 import { ExploreView } from "./views/ExploreView";
 import { HomeView } from "./views/HomeView";
 import { EmptyView } from "./views/EmptyView";
