@@ -1,24 +1,7 @@
 import { Clock } from 'lucide-react';
 import { getDealTimeLabel } from "@/lib/deal-time";
 import { useState } from 'react';
-export interface Deal {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  category: string;
-  type: string;
-  tags: string[];
-  discount_label: string;
-  price: number;
-  original_price: number;
-  start_date: string;
-  end_date: string;
-  location: string;
-  user_id: string | null;
-  created_at: string;
-  updated_at: string;
-}
+import type { Deal } from "@/types/deal";
 
 
 interface DealCardProps {
@@ -31,14 +14,14 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
 
   const getTagColor = (tag: string) => {
     switch (tag) {
-      case 'Flash':
+      case 'grocery':
         return '#c99a6e';
-      case 'Weekly':
-        return '#a67c52';
-      case 'Always':
+      case 'restaurant':
+        return '#2a2a2a';
+      case 'coffee':
         return '#a8b5a0';
       default:
-        return '#c99a6e';
+        return '#6b6b6b';
     }
   };
 
@@ -58,8 +41,8 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
     >
       {/* Deal Image */}
       <div className="relative w-full flex-1 overflow-hidden flex-shrink-0">
-        <img 
-          src={deal.image_url} 
+        <img
+          src={deal.image_url ?? "/images/deal-placeholder.jpg"}
           alt={deal.title}
           className="w-full h-full object-cover"
         />
@@ -67,7 +50,7 @@ export function DealCard({ deal, darkMode }: DealCardProps) {
         {/* Tag Badge */}
         <div 
           className="absolute top-3 left-3 px-3 py-1 rounded-full text-white text-sm backdrop-blur-sm"
-          style={{ backgroundColor: `${getTagColor(deal.tag)}CC` }}
+          style={{ backgroundColor: `${getTagColor(deal.type)}CC` }}
         >
           {deal.type}
         </div>

@@ -47,11 +47,11 @@ export function ExploreView({ deals, searchTerm, onSearchChange }: ExploreViewPr
       {/* Desktop Layout */}
       <div className="hidden lg:flex max-w-[1440px] mx-auto">
         <ExploreSidebar
+          categories={CATEGORIES}
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
           searchTerm={searchTerm}
           onSearchChange={onSearchChange}
-          categories={CATEGORIES}
         />
         <ExploreContent deals={filteredDeals} />
       </div>
