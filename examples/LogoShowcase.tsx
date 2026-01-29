@@ -1,4 +1,4 @@
-import { Logo1, Logo2, Logo3, Logo4, Logo5 } from './logos';
+import { Logo1, Logo2, Logo3, Logo4, Logo5 } from '../src/components/logos';
 
 interface LogoShowcaseProps {
   darkMode: boolean;

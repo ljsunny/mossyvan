@@ -1,4 +1,4 @@
-import { Logo1 } from './logos';
+import { Logo1 } from '../src/components/logos';;
 import { MapPin, Star, Clock } from 'lucide-react';
 
 interface UsageExamplesProps {
