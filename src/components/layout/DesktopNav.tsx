@@ -5,6 +5,7 @@ import { Logo1 } from "../logos";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 import { useNav } from "@/app/providers/NavProvider";
 import AddDealModal from "@/components/deals/AddDealModal";
+import Link from "../../../node_modules/next/link";
 
 export function DesktopNav() {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -48,6 +49,7 @@ export function DesktopNav() {
         </div>
         <div className="flex items-center gap-3">
           <AddDealModal />
+          <Link href="/login">Login</Link>
           <button
             onClick={toggleDarkMode}
             className={`p-2.5 rounded-xl ${
