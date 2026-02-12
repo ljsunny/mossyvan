@@ -5,11 +5,34 @@ import { Logo1 } from "../logos";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 import { useNav } from "@/app/providers/NavProvider";
 import AddDealModal from "@/components/deals/AddDealModal";
-import Link from "../../../node_modules/next/link";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase/client";
 
 export function DesktopNav() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const { activeNav, setActiveNav } = useNav();
+
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    // 현재 세션 체크
+    supabase.auth.getSession().then(({ data }) => {
+      setIsAuthed(!!data.session);
+    });
+
+    // 로그인 상태 변경 감지
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setIsAuthed(!!session);
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
 
   return (
     <nav className={`hidden lg:block sticky top-0 z-20 backdrop-blur-lg border-b ${
@@ -49,7 +72,18 @@ export function DesktopNav() {
         </div>
         <div className="flex items-center gap-3">
           <AddDealModal />
-          <Link href="/login">Login</Link>
+          {isAuthed ? (
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+              }}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link href="/login">Login</Link>
+          )}
+
           <button
             onClick={toggleDarkMode}
             className={`p-2.5 rounded-xl ${

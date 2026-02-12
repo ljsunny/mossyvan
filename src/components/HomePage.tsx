@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { sortDeals } from "@/lib/sortDeals";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
 import { useNav } from "@/app/providers/NavProvider";
