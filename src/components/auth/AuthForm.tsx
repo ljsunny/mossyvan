@@ -16,7 +16,7 @@ export default function AuthForm({ view = "sign_in" }: Props) {
           supabaseClient={supabase}
           appearance={{
             theme: ThemeSupa,
-            // 너 Mossy 톤으로 살짝 커스텀도 가능
+            
             variables: {
               default: {
                 colors: {

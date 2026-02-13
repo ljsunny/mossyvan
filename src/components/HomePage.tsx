@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { sortDeals } from "@/lib/sortDeals";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
@@ -15,8 +16,22 @@ export function HomePage() {
   const [deals, setDeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const searchParams = useSearchParams();
   const { darkMode } = useDarkMode();
-  const { activeNav } = useNav();
+  const { activeNav, setActiveNav } = useNav(); // ✅ setActiveNav 추가
+
+  // ✅ URL 쿼리로 탭 선택 (/?tab=explore)
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+
+    if (tab === "explore") {
+      setActiveNav("Explore");
+    } else if (tab === "home" || tab === null) {
+      // 기본값은 Home
+      setActiveNav("Home");
+    }
+  }, [searchParams, setActiveNav]);
 
   useEffect(() => {
     async function loadDeals() {
@@ -38,20 +53,20 @@ export function HomePage() {
     loadDeals();
   }, []);
 
-  // --- simple loading UI ---
   if (loading) {
     return (
       <div className={`min-h-screen flex items-center justify-center ${darkMode ? "bg-[#1a1a1a]" : "bg-[#faf9f7]"}`}>
-        <Loading/>
+        <Loading />
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 lg:pb-0 pb-20 ${
-      darkMode ? "bg-[#1a1a1a]" : "bg-[#faf9f7]"
-    }`}>
-      {/* Mobile Header (always visible on mobile) */}
+    <div
+      className={`min-h-screen transition-colors duration-300 lg:pb-0 pb-20 ${
+        darkMode ? "bg-[#1a1a1a]" : "bg-[#faf9f7]"
+      }`}
+    >
       <div className="lg:hidden">
         <MobileHeader
           searchTerm={searchTerm}
@@ -61,17 +76,13 @@ export function HomePage() {
       </div>
 
       {activeNav === "Home" && <HomeView />}
-      
+
       {activeNav === "Explore" && (
-        <ExploreView
-          deals={deals}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-        />
+        <ExploreView deals={deals} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       )}
-      
+
       {activeNav === "Favorites" && <EmptyView title="Saved Deals" />}
-      
+
       {activeNav === "Profile" && <EmptyView title="Profile" />}
     </div>
   );
