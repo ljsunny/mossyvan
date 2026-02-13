@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { sortDeals } from "@/lib/sortDeals";
 import { useDarkMode } from "@/app/providers/DarkModeProvider";
@@ -13,26 +12,24 @@ import { SavedView } from "./views/SavedView";
 import { EmptyView } from "./views/EmptyView";
 import { MobileHeader } from "./layout/MobileHeader";
 
-export function HomePage() {
+export function HomePage({ initialTab }: { initialTab?: string }) {
   const [deals, setDeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const searchParams = useSearchParams();
+
   const { darkMode } = useDarkMode();
   const { activeNav, setActiveNav } = useNav(); // ✅ setActiveNav 추가
 
-  // ✅ URL 쿼리로 탭 선택 (/?tab=explore)
   useEffect(() => {
-    const tab = searchParams.get("tab");
-
-    if (tab === "explore") {
+    if (initialTab === "explore") {
       setActiveNav("Explore");
-    } else if (tab === "home" || tab === null) {
-      // 기본값은 Home
+    } else {
+      // 기본값 Home
       setActiveNav("Home");
     }
-  }, [searchParams, setActiveNav]);
+  }, [initialTab, setActiveNav]);
+  
 
   useEffect(() => {
     async function loadDeals() {

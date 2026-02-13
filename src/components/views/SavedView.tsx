@@ -8,8 +8,10 @@ import Loading from "@/components/ui/loading";
 import { DealCard } from "@/components/deals/DealCard";
 
 type FavoriteRow = {
-  deal: Deal | null;
+  created_at: string;
+  deal: Deal | Deal[] | null; 
 };
+
 
 export function SavedView() {
   const { darkMode } = useDarkMode();
@@ -58,9 +60,11 @@ export function SavedView() {
       }
 
       const rows = (data ?? []) as FavoriteRow[];
+
       const deals = rows
-        .map((r) => r.deal)
+        .map((r) => (Array.isArray(r.deal) ? r.deal[0] : r.deal))
         .filter((d): d is Deal => Boolean(d));
+      
 
       setSavedDeals(deals);
       setLoading(false);
