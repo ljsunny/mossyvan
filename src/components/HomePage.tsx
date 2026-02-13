@@ -9,6 +9,7 @@ import { useNav } from "@/app/providers/NavProvider";
 import Loading from "@/components/ui/loading";
 import { ExploreView } from "./views/ExploreView";
 import { HomeView } from "./views/HomeView";
+import { SavedView } from "./views/SavedView";
 import { EmptyView } from "./views/EmptyView";
 import { MobileHeader } from "./layout/MobileHeader";
 
@@ -81,7 +82,9 @@ export function HomePage() {
         <ExploreView deals={deals} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
       )}
 
-      {activeNav === "Favorites" && <EmptyView title="Saved Deals" />}
+      {activeNav === "Favorites" && (
+        <SavedView/>
+      )}
 
       {activeNav === "Profile" && <EmptyView title="Profile" />}
     </div>
